@@ -1,0 +1,30 @@
+.env
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+node_modules*/
+.next/
+uploads/
+*.tar
+*.tar.gz
+
+# ===== 2026-10-14 补强：只上传源代码，其余一律排除 =====
+# 全新初始化前备份的旧 .git（留档用，绝不提交）
+.git.backup-*
+# WorkBuddy 会话产物（memory 可能含密钥/口令，绝不提交）
+.workbuddy/
+
+.idea/
+.vscode/
+.env.local
+.env.*.local
+*.log
+logs/
+dist/
+build/
+
+# Celery Beat 运行时调度文件 / 备份文件（不上传）
+celerybeat-schedule*
+*.bak

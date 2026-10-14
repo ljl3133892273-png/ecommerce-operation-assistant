@@ -1,0 +1,135 @@
+@import "tailwindcss";
+
+/*
+ * 设计令牌层（design tokens）
+ * 所有颜色、圆角、字体先在这里定义，再通过 @theme 暴露成 Tailwind 工具类。
+ *
+ * 色板口径（主色：深青绿 Teal）：
+ *   brand    深青绿   —— 主操作按钮、品牌标识、激活态、链接、焦点环
+ *   solid    同系深版 —— 深色面板（Agent Harness 卡等），与主色有亲缘关系
+ *   success  草绿     —— 仅表示「已完成 / 正常 / 已通过」
+ *   warning  琥珀     —— 待办、风险提示
+ *   danger   玫红     —— 失败、破坏性操作
+ *   info     靛蓝     —— 中性信息（刻意避开青绿与草绿，保证三色可辨）
+ *
+ * 注意：brand(174°) 与 success(142°) 色相只差约 32°，
+ * 因此 success 浅底刻意加深到 #BBF7D0，与 brand 浅底 #CCFBF1 靠明度拉开。
+ *
+ * 想整体换主色，只改下面 --brand / --brand-hover / --brand-soft / --solid 四行。
+ */
+:root {
+  /* 画布加深到与白卡差约 7% 亮度，卡片才浮得起来（原 #f6f8fb 只差 3%，所以发素） */
+  --canvas: #edf1f6;
+  --surface: #ffffff;
+  /* 卡片内部的次级底色，需与 canvas 明确区分，否则三级层次分不开 */
+  --surface-muted: #f3f6fa;
+
+  --line: #e3e8ef;
+  --line-strong: #cbd5e1;
+
+  --ink: #0f172a;
+  --ink-muted: #5a6b85;
+  --ink-soft: #95a2b6;
+
+  --brand: #0f766e;
+  --brand-hover: #115e59;
+  --brand-soft: #ccfbf1;
+
+  --solid: #134e4a;
+
+  --success: #15803d;
+  --success-soft: #bbf7d0;
+
+  --warning: #b45309;
+  --warning-soft: #fef3c7;
+
+  --danger: #be123c;
+  --danger-soft: #ffe4e6;
+
+  --info: #4338ca;
+  --info-soft: #e0e7ff;
+
+  --app-font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB",
+    "Microsoft YaHei", "Noto Sans SC", Inter, Arial, Helvetica, sans-serif;
+  --app-font-mono: "Cascadia Code", "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+}
+
+@theme inline {
+  --color-canvas: var(--canvas);
+  --color-surface: var(--surface);
+  --color-surface-muted: var(--surface-muted);
+
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+  --color-ink-soft: var(--ink-soft);
+
+  --color-brand: var(--brand);
+  --color-brand-hover: var(--brand-hover);
+  --color-brand-soft: var(--brand-soft);
+
+  --color-solid: var(--solid);
+
+  --color-success: var(--success);
+  --color-success-soft: var(--success-soft);
+
+  --color-warning: var(--warning);
+  --color-warning-soft: var(--warning-soft);
+
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
+
+  --color-info: var(--info);
+  --color-info-soft: var(--info-soft);
+
+  /* 兼容旧令牌名，避免历史类名失效 */
+  --color-background: var(--canvas);
+  --color-foreground: var(--ink);
+  --color-primary: var(--brand);
+  --color-primary-hover: var(--brand-hover);
+
+  --radius-card: 0.625rem;
+  --radius-control: 0.5rem;
+
+  /* 卡片专属柔和阴影：双层、极低不透明度，只做「浮起」不做「投影」 */
+  --shadow-card: 0 1px 2px rgba(16, 24, 40, 0.05), 0 1px 3px rgba(16, 24, 40, 0.04);
+
+  --font-sans: var(--app-font-sans);
+  --font-mono: var(--app-font-mono);
+}
+
+body {
+  background-color: var(--canvas);
+  color: var(--ink);
+  font-family: var(--app-font-sans);
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+::selection {
+  background: #ccfbf1;
+  color: var(--ink);
+}
+
+/* 只在键盘导航时显示轮廓，鼠标点击不额外加框 */
+a:focus-visible,
+button:focus-visible,
+summary:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 2px;
+  border-radius: var(--radius-control);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
