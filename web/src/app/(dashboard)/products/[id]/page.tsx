@@ -3277,7 +3277,7 @@ function absoluteMediaUrl(url: string): string {
   if (url.startsWith("http://") || url.startsWith("https://")) {
     return url;
   }
-  return `${process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://127.0.0.1:8000"}${url}`;
+  return `${process.env.NEXT_PUBLIC_API_BASE_URL ?? ""}${url}`;
 }
 
 /** 短链推广链接URL，封装当前页面重复使用的转换或展示规则，并统一处理空值边界。 */
@@ -3285,7 +3285,7 @@ function shortPromotionLinkUrl(shortCode: string | null): string | null {
   if (!shortCode) {
     return null;
   }
-  return `${process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://127.0.0.1:8000"}/api/v1/links/r/${shortCode}`;
+  return `${process.env.NEXT_PUBLIC_API_BASE_URL ?? ""}/api/v1/links/r/${shortCode}`;
 }
 
 /** 方案scenes，把不可信表单或 JSON 值转换为页面逻辑可安全使用的类型。 */

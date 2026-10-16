@@ -54,5 +54,5 @@ def test_checkpoint_url_includes_reserved_password_characters() -> None:
     )
 
     assert settings.checkpoint_database_url == (
-        "postgresql://agent:secret@with:/reserved?characters@127.0.0.1:5433/agent_checkpoints"
+        "postgresql://agent:secret@with:/reserved?characters@127.0.0.1:6130/agent_checkpoints"
     )

@@ -245,5 +245,5 @@ function absoluteMediaUrl(url: string): string {
   if (url.startsWith("http://") || url.startsWith("https://")) {
     return url;
   }
-  return `${process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://127.0.0.1:8000"}${url}`;
+  return `${process.env.NEXT_PUBLIC_API_BASE_URL ?? ""}${url}`;
 }

@@ -28,3 +28,9 @@ build/
 # Celery Beat 运行时调度文件 / 备份文件（不上传）
 celerybeat-schedule*
 *.bak
+
+# ===== 2026-10-16 上传前补强：根目录临时排查产物 =====
+/_*.txt
+/_*.py
+/_*.bat
+!/__init__.py

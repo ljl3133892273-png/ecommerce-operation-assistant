@@ -20,7 +20,9 @@ import { authHeaders, workspaceAuthHeaders } from "./session";
 const API_BASE_URL =
   process.env.API_INTERNAL_BASE_URL ??
   process.env.NEXT_PUBLIC_API_BASE_URL ??
-  "http://127.0.0.1:8000";
+  // 兜底值：Docker 内为服务名（compose 已注入 API_INTERNAL_BASE_URL）；
+  // 本地直跑时指向后端容器映射到宿主机的端口 6005。
+  "http://127.0.0.1:6005";
 
 /** 请求后端获取商品接口，统一处理认证、Workspace、错误和强类型响应。 */
 export async function getProducts(): Promise<Product[]> {

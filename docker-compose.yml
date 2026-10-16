@@ -7,7 +7,7 @@ services:
       MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD:?Set MYSQL_ROOT_PASSWORD in .env}"
       MYSQL_DATABASE: ${MYSQL_DATABASE:-ecommerce_operation}
     ports:
-      - "127.0.0.1:${MYSQL_PORT:-3306}:3306"
+      - "127.0.0.1:${MYSQL_PORT:-6112}:3306"
     volumes:
       - mysql-data:/var/lib/mysql
     healthcheck:
@@ -22,7 +22,7 @@ services:
       REDIS_PASSWORD: "${REDIS_PASSWORD:?Set REDIS_PASSWORD in .env}"
     command: ["sh", "-c", "exec redis-server --requirepass \"$${REDIS_PASSWORD}\""]
     ports:
-      - "127.0.0.1:${REDIS_PORT:-6379}:6379"
+      - "127.0.0.1:${REDIS_PORT:-6120}:6379"
     healthcheck:
       test: ["CMD-SHELL", "redis-cli -a \"$${REDIS_PASSWORD}\" ping"]
       interval: 10s
@@ -36,7 +36,7 @@ services:
       POSTGRES_PASSWORD: "${AGENT_POSTGRES_PASSWORD:?Set AGENT_POSTGRES_PASSWORD in .env}"
       POSTGRES_DB: ${AGENT_POSTGRES_DATABASE:-agent_checkpoints}
     ports:
-      - "127.0.0.1:${AGENT_POSTGRES_PORT:-5433}:5432"
+      - "127.0.0.1:${AGENT_POSTGRES_PORT:-6130}:5432"
     volumes:
       - agent-checkpoint-data:/var/lib/postgresql/data
     healthcheck:
@@ -52,7 +52,7 @@ services:
     environment:
       DATABASE_URL: mysql+pymysql://root:${MYSQL_ROOT_PASSWORD:?Set MYSQL_ROOT_PASSWORD in .env}@mysql:3306/${MYSQL_DATABASE:-ecommerce_operation}
       APP_ENV: ${APP_ENV:-development}
-      API_CORS_ORIGINS: http://localhost:3000,http://127.0.0.1:3000,http://localhost:3001,http://127.0.0.1:3001
+      API_CORS_ORIGINS: http://localhost:6006,http://127.0.0.1:6006
       REDIS_URL: redis://:${REDIS_PASSWORD:?Set REDIS_PASSWORD in .env}@redis:6379/0
       TASK_QUEUE_BACKEND: celery
       CELERY_TASK_DEFAULT_QUEUE: generation
@@ -91,7 +91,7 @@ services:
       VIDEO_POLL_INTERVAL_SECONDS: ${VIDEO_POLL_INTERVAL_SECONDS:-10}
       VIDEO_POLL_MAX_ATTEMPTS: ${VIDEO_POLL_MAX_ATTEMPTS:-36}
     ports:
-      - "${API_PORT:-8000}:8000"
+      - "${API_PORT:-6005}:8000"
     volumes:
       - api-uploads:/app/uploads
     depends_on:
@@ -163,12 +163,15 @@ services:
     build:
       context: ./web
       args:
-        NEXT_PUBLIC_API_BASE_URL: http://127.0.0.1:${API_PORT:-8000}
+        # 留空表示使用相对路径：浏览器请求同源的 Next.js 路由，
+        # 由服务端通过 API_INTERNAL_BASE_URL 转发到后端。
+        # 若填绝对地址，它会在构建期固化进浏览器 JS，换机器/换端口即失效。
+        NEXT_PUBLIC_API_BASE_URL: ""
     environment:
       API_INTERNAL_BASE_URL: http://api:8000
-      NEXT_PUBLIC_API_BASE_URL: http://127.0.0.1:${API_PORT:-8000}
+      NEXT_PUBLIC_API_BASE_URL: ""
     ports:
-      - "${WEB_PORT:-3000}:3000"
+      - "${WEB_PORT:-6006}:3000"
     depends_on:
       - api
 
